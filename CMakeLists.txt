@@ -3,4 +3,4 @@ project(Epsilon)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Epsilon main.cpp)
+add_executable(Epsilon src/Application/main.cpp)
