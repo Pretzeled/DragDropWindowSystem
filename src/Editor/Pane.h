@@ -10,7 +10,8 @@
 class Pane: public QWidget {
     Q_OBJECT
 public:
-    Pane(QWidget *parent = nullptr);
+    Pane(QWidget *parent = nullptr, int index = 0);
+    int m_index;
 private:
     QColor m_bgColor;
 public slots:

@@ -7,10 +7,12 @@
 #include <iostream>
 #include <QPushButton>
 #include <QLayout>
+#include <QLabel>
 
 #include "ViewSplitter.h"
 
-Pane::Pane(QWidget *parent) : QWidget(parent) {
+Pane::Pane(QWidget *parent, int index) : QWidget(parent) {
+    this->m_index = index;
     m_bgColor = QColor(random() % 256, random() % 256, random() % 256);
     QPalette palette = this->palette();
     palette.setColor(QPalette::Window, m_bgColor); // You can also use QColor(r, g, b)
@@ -24,6 +26,8 @@ Pane::Pane(QWidget *parent) : QWidget(parent) {
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(4);
 
+    auto *label = new QLabel(QString("Pane %1").arg(m_index), this);
+
     auto *buttonSplitH = new QPushButton("Split Horizontal", this);
     auto *buttonSplitV = new QPushButton("Split Vertical", this);
 
@@ -31,6 +35,7 @@ Pane::Pane(QWidget *parent) : QWidget(parent) {
     buttonSplitV->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     //auto *container = new QWidget(this);
+    layout->addWidget(label);
     layout->addWidget(buttonSplitH);
     layout->addWidget(buttonSplitV);
 
@@ -54,7 +59,7 @@ void Pane::split(Qt::Orientation orientation)
     QSize originalSize = size();
 
     auto *newSplitter = new ViewSplitter(orientation, container);
-    auto* newPane = new Pane();
+    auto* newPane = new Pane(newSplitter, this->m_index + 1);
 
     newSplitter->addWidget(this);
     newSplitter->addWidget(newPane);
@@ -84,6 +89,8 @@ void Pane::split(Qt::Orientation orientation)
 
     newSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
+    newSplitter->setSizes({1,1});
+    this->show();
     newSplitter->show();
 
     std::cout << "New Pane" << std::endl;
