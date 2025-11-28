@@ -58,41 +58,35 @@ void Pane::split(Qt::Orientation orientation)
 
     QSize originalSize = size();
 
-    auto *newSplitter = new ViewSplitter(orientation, container);
-    auto* newPane = new Pane(newSplitter, this->m_index + 1);
-
-    newSplitter->addWidget(this);
-    newSplitter->addWidget(newPane);
-
-    this->setParent(newSplitter);
-    newSplitter->setParent(container);
+    auto *newSplitter = new ViewSplitter(orientation);
+    auto *newPane = new Pane(newSplitter, this->m_index + 1);
 
     if (auto* parentSplitter = qobject_cast<QSplitter*>(container)) {
         // Replace this pane with the new splitter in the parent splitter
         int idx = parentSplitter->indexOf(this);
+        std::cout << idx << std::endl;
         if (idx >= 0) parentSplitter->replaceWidget(idx, newSplitter);
     } else if (auto* lay = container->layout()) {
-
-        std::cout << "layout replace" << std::endl;
-        // Replace this pane with the new splitter in the parent layout
-        lay->addWidget(newSplitter);
-        // Fallback: keep geometry and insert manually
-        // newSplitter->setGeometry(this->geometry());
-        // newSplitter->setParent(container);
-    } else {
-        std::cout << "fallback" << std::endl;
-        // Fallback: keep geometry and insert manually
-        newSplitter->setGeometry(this->geometry());
+        // It's fine if we addWidget because the only time we aren't in a QSplitter is when the parent is ViewManager
         newSplitter->setParent(container);
+        lay->addWidget(newSplitter);
+
+    } else {
+        // Fallback: keep geometry
+        newSplitter->setParent(container);
+        newSplitter->setGeometry(this->geometry());
     }
 
+    newSplitter->addWidget(this);
+    newSplitter->addWidget(newPane);
 
-    newSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    // newSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     newSplitter->setSizes({1,1});
     this->show();
     newSplitter->show();
 
     std::cout << "New Pane" << std::endl;
-    container->dumpObjectTree();
+    //container->dumpObjectTree();
 }
