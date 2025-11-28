@@ -8,12 +8,24 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 # echo 'export CMAKE_PREFIX_PATH="$HOME/Qt/6.10.1/macos/lib/cmake:$CMAKE_PREFIX_PATH"' >> ~/.zshrc
-find_package(Qt6 COMPONENTS Widgets REQUIRED)
+find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
+
+#add_subdirectory(external/Qt-Advanced-Docking-System)
 
 add_executable(Epsilon src/Application/main.cpp
         src/Editor/MainWindow.cpp
         src/Editor/MainWindow.h
-        src/Editor/CodeSubWindow.cpp
-        src/Editor/CodeSubWindow.h)
+        src/Editor/ViewManager.cpp
+        src/Editor/ViewManager.h
+        src/Editor/ViewSplitter.cpp
+        src/Editor/ViewSplitter.h
+        src/Editor/Pane.cpp
+        src/Editor/Pane.h
+)
 
-target_link_libraries(Epsilon PRIVATE Qt6::Widgets)
+
+target_link_libraries(Epsilon PUBLIC Qt6::Widgets ) #ads::qtadvanceddocking-qt6
+
+#target_include_directories(Epsilon PUBLIC
+#       "/external/Qt-Advanced-Docking-System/src"
+#)

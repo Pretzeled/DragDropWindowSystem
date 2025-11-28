@@ -15,8 +15,7 @@
 #include <QFile>
 #include <QFileDialog>
 
-#include "CodeSubWindow.h"
-#include "CodeSubWindow.h"
+#include "ViewManager.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     this->setWindowTitle(tr("Editor"));
@@ -36,29 +35,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     m_fileMenu->addAction(newAct);
     m_fileMenu->addAction(openAct);
 
-    // m_fileToolBar = addToolBar(tr("File"));
-    // fileToolBar->addAction(newAct);
-    // fileToolBar->addAction(openAct);
-    // fileToolBar->setAllowedAreas(Qt::TopToolBarArea | Qt::BottomToolBarArea | Qt::LeftToolBarArea | Qt::RightToolBarArea);
-    // addToolBar(Qt::TopToolBarArea, fileToolBar);
-
-    m_mainMDIArea = new QMdiArea(this);
-    m_mainMDIArea->setViewMode(QMdiArea::TabbedView);
-    m_mainMDIArea->setTabsClosable(true);
-    m_mainMDIArea->setTabsMovable(true);
-    setCentralWidget(m_mainMDIArea);
-
-    auto *codeSubWindowA = new CodeSubWindow(this, tr("FileA.cpp"));
-    auto *codeSubWindowB = new CodeSubWindow(this, tr("FileA.cpp"));
-
-    m_mainMDIArea->addSubWindow(codeSubWindowA);
-    m_mainMDIArea->addSubWindow(codeSubWindowB);
+    auto* viewManager = new ViewManager(this);
+    setCentralWidget(viewManager);
 
 }
 
 void MainWindow::newFile()
 {
     std::cout << "New file triggered" << std::endl;
+    this->dumpObjectTree();
+    for (QWidget* w : this->findChildren<QWidget*>()) {
+        std::cout << "Type: " << w->metaObject()->className() << " W: " << w->width()<< std::endl;
+    }
 }
 
 void MainWindow::promptOpenFile()
@@ -67,14 +55,6 @@ void MainWindow::promptOpenFile()
     auto fileName = QFileDialog::getOpenFileName(this,
     tr("Open Image"), "", tr("Image Files (*.png *.jpg *.bmp)"));
     if (!fileName.isEmpty()) {
-        openFile(fileName.toStdString());
+        //openFile(fileName.toStdString());
     }
-}
-
-void MainWindow::openFile(const std::filesystem::path &filePath)
-{
-    auto* file = new QFile(QString::fromStdString(filePath.string()));
-    auto* sub = new CodeSubWindow(this, file->fileName());
-    m_mainMDIArea->addSubWindow(sub);
-    delete file;
 }

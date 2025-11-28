@@ -5,7 +5,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <qlistwidget.h>
+// #include <qlistwidget.h>
 #include <QMainWindow>
 #include <qmdiarea.h>
 #include <QMenuBar>
@@ -16,14 +16,11 @@ class MainWindow:  public QMainWindow {
     Q_OBJECT
 public:
     MainWindow(QWidget *parent = nullptr);
-    void openFile(const std::filesystem::path& filePath);
 public slots:
     void newFile();
     void promptOpenFile();
 private:
     QMenu* m_fileMenu;
-    QToolBar* m_fileToolBar;
-    QMdiArea* m_mainMDIArea;
 };
 
 
