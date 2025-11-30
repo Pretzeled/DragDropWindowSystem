@@ -11,8 +11,8 @@ class FloatingTabWidget: public QPushButton {
     Q_OBJECT
 public:
     explicit FloatingTabWidget(const QString &text, QWidget *parent = nullptr);
-    // QSize sizeHint() const override;
-    // QSize minimumSizeHint() const override;
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 protected:
     // void mousePressEvent(QMouseEvent *event) override;
     // void mouseMoveEvent(QMouseEvent *event) override;

@@ -9,8 +9,6 @@
 #include <QMainWindow>
 #include <qmdiarea.h>
 #include <QMenuBar>
-#include <__filesystem/path.h>
-
 
 class MainWindow:  public QMainWindow {
     Q_OBJECT

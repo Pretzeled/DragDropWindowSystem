@@ -21,7 +21,7 @@ add_executable(Epsilon src/Application/main.cpp
         src/Editor/ViewSplitter.h
         src/Editor/Pane.cpp
         src/Editor/Pane.h
-        src/Editor/CustomTabBar.cpp
+        src/Editor/FluidTabBar.cpp
         src/Editor/FluidTabBar.h
         src/Editor/FloatingTabWidget.cpp
         src/Editor/FloatingTabWidget.h
@@ -29,6 +29,22 @@ add_executable(Epsilon src/Application/main.cpp
 
 
 target_link_libraries(Epsilon PUBLIC Qt6::Widgets ) #ads::qtadvanceddocking-qt6
+
+if(WIN32)
+    find_program(WINDEPLOYQT_EXE NAMES windeployqt.exe windeployqt)
+
+    if(NOT WINDEPLOYQT_EXE)
+        message(WARNING "windeployqt not found. Add Qt bin to PATH or set WINDEPLOYQT_EXE.")
+    else()
+        add_custom_command(TARGET Epsilon POST_BUILD
+                COMMAND "${WINDEPLOYQT_EXE}"
+                --dir "$<TARGET_FILE_DIR:Epsilon>"
+                --qmldir "${CMAKE_SOURCE_DIR}"   # remove if not using QML
+                "$<TARGET_FILE:Epsilon>"
+                COMMENT "Running windeployqt to copy Qt DLLs/plugins to output dir"
+        )
+    endif()
+endif()
 
 #target_include_directories(Epsilon PUBLIC
 #       "/external/Qt-Advanced-Docking-System/src"

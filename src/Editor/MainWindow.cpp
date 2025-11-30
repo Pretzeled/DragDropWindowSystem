@@ -17,7 +17,7 @@
 #include <QFileDialog>
 
 #include "FloatingTabWidget.h"
-#include "TabBar.h"
+#include "FluidTabBar.h"
 #include "ViewManager.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
@@ -34,19 +34,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     openAct->setStatusTip(tr("Open an existing file"));
     connect(openAct, &QAction::triggered, this, &MainWindow::promptOpenFile);
 
-    m_fileMenu = menuBar()->addMenu(tr("&File"));
-    m_fileMenu->addAction(newAct);
-    m_fileMenu->addAction(openAct);
+    // m_fileMenu = menuBar()->addMenu(tr("&File"));
+    // m_fileMenu->addAction(newAct);
+    // m_fileMenu->addAction(openAct);
 
     auto* viewManager = new ViewManager(this);
     setCentralWidget(viewManager);
 
 
-    // QBoxLayout* layout = new QVBoxLayout(this);
     // auto* floatingTabWidget = new FloatingTabWidget("Floating Tab", this);
-    // layout->addWidget(floatingTabWidget);
-    // auto* tabBar = new TabBar(this);
-    // layout->addWidget(tabBar);
+    //auto* tabBar = new FluidTabBar(this);
 
 }
 

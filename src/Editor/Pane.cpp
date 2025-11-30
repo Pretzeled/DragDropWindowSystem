@@ -8,12 +8,14 @@
 #include <QPushButton>
 #include <QLayout>
 #include <QLabel>
+#include <QRandomGenerator>
 
+#include "FluidTabBar.h"
 #include "ViewSplitter.h"
 
 Pane::Pane(QWidget *parent, int index) : QWidget(parent) {
     this->m_index = index;
-    m_bgColor = QColor(random() % 256, random() % 256, random() % 256);
+    m_bgColor = QColor(QRandomGenerator::global()->bounded(255), QRandomGenerator::global()->bounded(255), QRandomGenerator::global()->bounded(255));
     QPalette palette = this->palette();
     palette.setColor(QPalette::Window, m_bgColor); // You can also use QColor(r, g, b)
     this->setPalette(palette);
@@ -24,7 +26,7 @@ Pane::Pane(QWidget *parent, int index) : QWidget(parent) {
 
     auto *layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
-    layout->setSpacing(4);
+    //layout->setSpacing(4);
 
     auto *label = new QLabel(QString("Pane %1").arg(m_index), this);
 
@@ -34,10 +36,18 @@ Pane::Pane(QWidget *parent, int index) : QWidget(parent) {
     buttonSplitH->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     buttonSplitV->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
+    auto *tabBar = new FluidTabBar(this);
+    layout->addWidget(tabBar);
+
     //auto *container = new QWidget(this);
     layout->addWidget(label);
     layout->addWidget(buttonSplitH);
     layout->addWidget(buttonSplitV);
+
+    layout->setStretch(0, 0);
+    layout->setStretch(1, 1);
+    layout->setStretch(2, 0);
+    layout->setStretch(3, 0);
 
     //addSubWindow(container);
     //container->show();
