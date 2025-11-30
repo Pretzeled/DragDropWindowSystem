@@ -1,7 +1,0 @@
-           _ MainWindow                                 Other Windows
-         /           \                                          |
-       Toolbars     ViewManager
-                         |
-                        Pane(s) (MdiArea)
-                         |
-                   EditorView(s) (QMdiSubWindow)

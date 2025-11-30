@@ -21,6 +21,10 @@ add_executable(Epsilon src/Application/main.cpp
         src/Editor/ViewSplitter.h
         src/Editor/Pane.cpp
         src/Editor/Pane.h
+        src/Editor/CustomTabBar.cpp
+        src/Editor/FluidTabBar.h
+        src/Editor/FloatingTabWidget.cpp
+        src/Editor/FloatingTabWidget.h
 )
 
 

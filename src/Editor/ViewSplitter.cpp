@@ -6,5 +6,4 @@
 
 ViewSplitter::ViewSplitter(Qt::Orientation orientation, QWidget *parent)
     : QSplitter(orientation, parent) {
-
 }

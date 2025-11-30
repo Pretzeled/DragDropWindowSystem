@@ -20,6 +20,8 @@ int main(int argc, char** argv)
     mainWindow.resize(800, 600);
 
     mainWindow.show();
+
+
     return app.exec();
 
 }

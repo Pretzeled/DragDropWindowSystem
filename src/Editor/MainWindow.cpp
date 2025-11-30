@@ -12,9 +12,12 @@
 #include <QStringListModel>
 #include <QMdiArea>
 #include <filesystem>
+#include <QBoxLayout>
 #include <QFile>
 #include <QFileDialog>
 
+#include "FloatingTabWidget.h"
+#include "TabBar.h"
 #include "ViewManager.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
@@ -37,6 +40,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
     auto* viewManager = new ViewManager(this);
     setCentralWidget(viewManager);
+
+
+    // QBoxLayout* layout = new QVBoxLayout(this);
+    // auto* floatingTabWidget = new FloatingTabWidget("Floating Tab", this);
+    // layout->addWidget(floatingTabWidget);
+    // auto* tabBar = new TabBar(this);
+    // layout->addWidget(tabBar);
 
 }
 
