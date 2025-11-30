@@ -5,9 +5,12 @@
 #include "FloatingTabWidget.h"
 
 #include <iostream>
+#include <QListWidget>
 #include <QMouseEvent>
 #include <QPainter>
 #include <qstyleoption.h>
+#include <QDrag>
+#include <QMimeData>
 
 FloatingTabWidget::FloatingTabWidget(const QString &text, QWidget *parent)
     : QPushButton(text, parent)
@@ -57,22 +60,44 @@ QSize FloatingTabWidget::sizeHint() const {
     return s;
 }
 
-//
-// void FloatingTabWidget::mousePressEvent(QMouseEvent *event)
-// {
-//     if (event->button() == Qt::LeftButton) {
-//         dragStart = event->globalPosition().toPoint() - frameGeometry().topLeft();
-//         dragging = true;
-//     }
-// }
-//
-// void FloatingTabWidget::mouseMoveEvent(QMouseEvent *event)
-// {
-//     if (dragging)
-//     {
-//         move(event->globalPosition().toPoint() - dragStart);
-//     }
-// }
+
+void FloatingTabWidget::mousePressEvent(QMouseEvent *event)
+{
+    if (!isChecked()) { // If tab is already checked, clicking it again shouldn't toggle it
+        QPushButton::mousePressEvent(event);
+    }
+
+    if (event->button() == Qt::LeftButton) {
+        //dragStart = event->globalPosition().toPoint() - frameGeometry().topLeft();
+        dragStart = event->pos();
+        std::cout << "Mouse press at " << frameGeometry().topLeft().x() << std::endl;
+        dragging = true;
+    }
+}
+
+
+
+void FloatingTabWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    if (!dragging || !(event->buttons() & Qt::LeftButton))
+    {
+        return;
+    }
+    //move(event->globalPosition().toPoint() - dragStart);
+
+    QDrag *drag = new QDrag(this);
+    QMimeData *mimeData = new QMimeData;
+    mimeData->setText(text());
+    drag->setMimeData(mimeData);
+
+    QPixmap pixmap(size());
+    pixmap.fill(Qt::transparent);
+
+    render(&pixmap);
+    drag->setPixmap(pixmap);
+    drag->setHotSpot(dragStart);
+    drag->exec(Qt::MoveAction);
+}
 //
 // void FloatingTabWidget::mouseReleaseEvent(QMouseEvent* event)
 // {
