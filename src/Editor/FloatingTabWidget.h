@@ -10,7 +10,7 @@
 class FloatingTabWidget: public QPushButton {
     Q_OBJECT
 public:
-    explicit FloatingTabWidget(const QString &text, QWidget *parent = nullptr);
+    explicit FloatingTabWidget(int modelIndex, QWidget *parent = nullptr);
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
 protected:
@@ -20,8 +20,10 @@ protected:
     void paintEvent(QPaintEvent *) override;
 
 private:
-    QPoint dragStart;
-    bool dragging = false;
+    int m_modelIndex = -1;
+
+    QPoint m_dragStart;
+    bool m_dragging = false;
 };
 
 

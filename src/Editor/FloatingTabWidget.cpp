@@ -12,8 +12,8 @@
 #include <QDrag>
 #include <QMimeData>
 
-FloatingTabWidget::FloatingTabWidget(const QString &text, QWidget *parent)
-    : QPushButton(text, parent)
+FloatingTabWidget::FloatingTabWidget(int modelIndex, QWidget *parent)
+    : QPushButton(QString("MTab %1").arg(modelIndex + 1), parent)
 {
     setCheckable(true);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
@@ -69,9 +69,8 @@ void FloatingTabWidget::mousePressEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton) {
         //dragStart = event->globalPosition().toPoint() - frameGeometry().topLeft();
-        dragStart = event->pos();
-        std::cout << "Mouse press at " << frameGeometry().topLeft().x() << std::endl;
-        dragging = true;
+        m_dragStart = event->pos();
+        m_dragging = true;
     }
 }
 
@@ -79,7 +78,7 @@ void FloatingTabWidget::mousePressEvent(QMouseEvent *event)
 
 void FloatingTabWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    if (!dragging || !(event->buttons() & Qt::LeftButton))
+    if (!m_dragging || !(event->buttons() & Qt::LeftButton))
     {
         return;
     }
@@ -95,7 +94,7 @@ void FloatingTabWidget::mouseMoveEvent(QMouseEvent *event)
 
     render(&pixmap);
     drag->setPixmap(pixmap);
-    drag->setHotSpot(dragStart);
+    drag->setHotSpot(m_dragStart);
     drag->exec(Qt::MoveAction);
 }
 //

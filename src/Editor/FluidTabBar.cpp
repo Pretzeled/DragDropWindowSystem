@@ -14,7 +14,7 @@ FluidTabBar::FluidTabBar(QWidget *parent)
     setLayout(layout);
 
     for (int i = 0; i < 3; ++i) {
-        auto* tab = new FloatingTabWidget(QString("Tab %1").arg(i + 1), this);
+        auto* tab = new FloatingTabWidget(i, this);
         layout->addWidget(tab);
     }
 

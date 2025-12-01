@@ -62,7 +62,6 @@ Pane::Pane(QWidget *parent, int index) : QWidget(parent) {
 
 void Pane::split(Qt::Orientation orientation)
 {
-    std::cout << "Splitting pane" << std::endl;
     QWidget *container = this->parentWidget();
     if (!container) return;
 
@@ -97,6 +96,5 @@ void Pane::split(Qt::Orientation orientation)
     this->show();
     newSplitter->show();
 
-    std::cout << "New Pane" << std::endl;
     //container->dumpObjectTree();
 }
