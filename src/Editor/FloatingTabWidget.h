@@ -4,8 +4,9 @@
 
 #ifndef FLOATINGTABWIDGET_H
 #define FLOATINGTABWIDGET_H
+#include <QDrag>
+#include <QMimeData>
 #include <QPushButton>
-
 
 class FloatingTabWidget: public QPushButton {
     Q_OBJECT
@@ -13,17 +14,23 @@ public:
     explicit FloatingTabWidget(int modelIndex, QWidget *parent = nullptr);
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
+
+    int _m_tabIndex = -1;
 protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
     // void mouseReleaseEvent(QMouseEvent* event) override;
     void paintEvent(QPaintEvent *) override;
-
 private:
     int m_modelIndex = -1;
 
     QPoint m_dragStart;
     bool m_dragging = false;
+    QDrag* m_drag;
+    QMimeData* m_mimeData;
+signals:
+    void tabSelected(int tabIndex);
 };
 
 

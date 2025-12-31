@@ -6,11 +6,16 @@
 #define TABBAR_H
 #include <QWidget>
 
-
 class FluidTabBar: public QWidget{
     Q_OBJECT
 public:
     FluidTabBar(QWidget *parent = nullptr);
+    bool addTab(int modelIndex, bool selectTab = true);
+private:
+    int m_selectedTabIndex = -1;
+    int m_tabCount = 0;
+public slots:
+    void slotSelectTab(int tabIndex);
 };
 
 

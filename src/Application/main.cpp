@@ -14,7 +14,7 @@
 int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
-    MainWindow mainWindow = new MainWindow();
+    auto mainWindow = MainWindow();
     //QMainWindow mainWindow;
 
     mainWindow.resize(800, 600);

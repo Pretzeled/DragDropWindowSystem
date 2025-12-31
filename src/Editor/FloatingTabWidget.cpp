@@ -64,7 +64,12 @@ QSize FloatingTabWidget::sizeHint() const {
 void FloatingTabWidget::mousePressEvent(QMouseEvent *event)
 {
     if (!isChecked()) { // If tab is already checked, clicking it again shouldn't toggle it
-        QPushButton::mousePressEvent(event);
+        std::cout << "not checked" << std::endl;
+        nextCheckState();
+        if (isChecked()) {
+            std::cout << "checked" << std::endl;
+            emit tabSelected(_m_tabIndex);
+        }
     }
 
     if (event->button() == Qt::LeftButton) {
@@ -83,9 +88,9 @@ void FloatingTabWidget::mouseMoveEvent(QMouseEvent *event)
         return;
     }
     //move(event->globalPosition().toPoint() - dragStart);
-
-    QDrag *drag = new QDrag(this);
-    QMimeData *mimeData = new QMimeData;
+    // VARS SHOULD NOT BE RECREATED
+    auto *drag = new QDrag(this);
+    auto *mimeData = new QMimeData;
     mimeData->setText(text());
     drag->setMimeData(mimeData);
 
@@ -96,11 +101,13 @@ void FloatingTabWidget::mouseMoveEvent(QMouseEvent *event)
     drag->setPixmap(pixmap);
     drag->setHotSpot(m_dragStart);
     drag->exec(Qt::MoveAction);
+    delete mimeData;
 }
-//
-// void FloatingTabWidget::mouseReleaseEvent(QMouseEvent* event)
-// {
-//     if (event->button() == Qt::LeftButton) {
-//         dragging = false;
-//     }
-// }
+
+
+void FloatingTabWidget::mouseReleaseEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton) {
+        m_dragging = false;
+    }
+}
