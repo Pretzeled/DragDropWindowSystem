@@ -65,15 +65,23 @@ void Pane::split(Qt::Orientation orientation)
     QWidget *container = this->parentWidget();
     if (!container) return;
 
-    QSize originalSize = size();
+    auto* parentSplitter = qobject_cast<QSplitter*>(container);
+
+    if (parentSplitter && parentSplitter->orientation() == orientation)
+    {
+        int idx = parentSplitter->indexOf(this);
+        auto *newPane = new Pane(parentSplitter, this->m_index + 1);
+        if (idx >= 0) parentSplitter->insertWidget(idx, newPane);
+        newPane->show();
+        return;
+    }
 
     auto *newSplitter = new ViewSplitter(orientation);
     auto *newPane = new Pane(newSplitter, this->m_index + 1);
 
-    if (auto* parentSplitter = qobject_cast<QSplitter*>(container)) {
+    if (parentSplitter) {
         // Replace this pane with the new splitter in the parent splitter
         int idx = parentSplitter->indexOf(this);
-        std::cout << idx << std::endl;
         if (idx >= 0) parentSplitter->replaceWidget(idx, newSplitter);
     } else if (auto* lay = container->layout()) {
         // It's fine if we addWidget because the only time we aren't in a QSplitter is when the parent is ViewManager

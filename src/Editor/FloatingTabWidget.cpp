@@ -5,6 +5,7 @@
 #include "FloatingTabWidget.h"
 
 #include <iostream>
+#include <QApplication>
 #include <QListWidget>
 #include <QMouseEvent>
 #include <QPainter>
@@ -75,7 +76,6 @@ void FloatingTabWidget::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         //dragStart = event->globalPosition().toPoint() - frameGeometry().topLeft();
         m_dragStart = event->pos();
-        m_dragging = true;
     }
 }
 
@@ -83,15 +83,17 @@ void FloatingTabWidget::mousePressEvent(QMouseEvent *event)
 
 void FloatingTabWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    if (!m_dragging || !(event->buttons() & Qt::LeftButton))
-    {
+    if (!(event->buttons() & Qt::LeftButton))
         return;
-    }
-    //move(event->globalPosition().toPoint() - dragStart);
+    if ((event->pos() - m_dragStart).manhattanLength() < QApplication::startDragDistance())
+        return;
+
     // VARS SHOULD NOT BE RECREATED
-    auto *drag = new QDrag(this);
-    auto *mimeData = new QMimeData;
-    mimeData->setText(text());
+    auto* drag = new QDrag(this);
+
+
+    auto* mimeData = new QMimeData;
+    mimeData->setText(text()); // this should include file path at some point
     drag->setMimeData(mimeData);
 
     QPixmap pixmap(size());
@@ -101,13 +103,12 @@ void FloatingTabWidget::mouseMoveEvent(QMouseEvent *event)
     drag->setPixmap(pixmap);
     drag->setHotSpot(m_dragStart);
     drag->exec(Qt::MoveAction);
-    delete mimeData;
 }
 
 
-void FloatingTabWidget::mouseReleaseEvent(QMouseEvent* event)
-{
-    if (event->button() == Qt::LeftButton) {
-        m_dragging = false;
-    }
-}
+// void FloatingTabWidget::mouseReleaseEvent(QMouseEvent* event)
+// {
+//     if (event->button() == Qt::LeftButton) {
+//         m_dragging = false;
+//     }
+// }

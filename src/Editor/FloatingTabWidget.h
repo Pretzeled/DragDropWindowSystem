@@ -19,16 +19,13 @@ public:
 protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent* event) override;
+    //void mouseReleaseEvent(QMouseEvent* event) override;
     // void mouseReleaseEvent(QMouseEvent* event) override;
     void paintEvent(QPaintEvent *) override;
 private:
     int m_modelIndex = -1;
 
     QPoint m_dragStart;
-    bool m_dragging = false;
-    QDrag* m_drag;
-    QMimeData* m_mimeData;
 signals:
     void tabSelected(int tabIndex);
 };
