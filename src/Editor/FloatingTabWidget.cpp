@@ -38,21 +38,10 @@ void FloatingTabWidget::paintEvent(QPaintEvent *) {
 }
 
 QSize FloatingTabWidget::minimumSizeHint() const {
-    // auto fm = fontMetrics();
-    // int minHeight = fm.height() + 5;
-    // int minWidth = fm.horizontalAdvance(text()) + 10;
-    // return QSize(minWidth, minHeight);
-    //std::cout << "minimum size hint: " << sizeHint().width() << "x" << sizeHint().height() << std::endl;
     return sizeHint();
 }
 
 QSize FloatingTabWidget::sizeHint() const {
-    // auto fm = fontMetrics();
-    // int minHeight = fm.height() + 5;
-    // int minWidth = fm.horizontalAdvance(text()) + 30;
-    // std::cout << "Size hint for '" << text().toStdString() << "': " << minWidth << "x" << minHeight << std::endl;
-    // return QSize(minWidth, minHeight);
-
     QStyleOptionButton opt;
     opt.initFrom(this);
     opt.text = text();
@@ -64,11 +53,9 @@ QSize FloatingTabWidget::sizeHint() const {
 
 void FloatingTabWidget::mousePressEvent(QMouseEvent *event)
 {
-    if (!isChecked()) { // If tab is already checked, clicking it again shouldn't toggle it
-        std::cout << "not checked" << std::endl;
+    if (!isChecked()) { // Only toggle tab if it's not selected; clicking a selected tab should do nothing
         nextCheckState();
         if (isChecked()) {
-            std::cout << "checked" << std::endl;
             emit tabSelected(_m_tabIndex);
         }
     }
