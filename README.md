@@ -1,6 +1,5 @@
 ## Drag and Drop Window System using C++ with Qt
-Extremely WIP
-Target: learning how to make a tileable tab and window system similar to those used in code editors like VSCode and CLion
+WIP
 Tileable windows
 Tab System
 
